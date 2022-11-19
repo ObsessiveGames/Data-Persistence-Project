@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
@@ -12,16 +13,17 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
+    [SerializeField] TextMeshProUGUI bestScoreText;
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
 
-    
     // Start is called before the first frame update
     void Start()
     {
+        bestScoreText.SetText($"Best Score : {GameManager.Instance.bestScoreName} : {GameManager.Instance.bestScore}");
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -71,6 +73,8 @@ public class MainManager : MonoBehaviour
     public void GameOver()
     {
         m_GameOver = true;
+        GameManager.Instance.Save(m_Points);
+        bestScoreText.SetText($"Best Score : {GameManager.Instance.bestScoreName} : {GameManager.Instance.bestScore}");
         GameOverText.SetActive(true);
     }
 }
